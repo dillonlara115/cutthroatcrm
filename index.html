@@ -154,7 +154,7 @@
     gap: 0.5rem;
   }
 
-  .waitlist-form input {
+  .waitlist-form input[type="email"] {
     flex: 1;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -166,8 +166,8 @@
     transition: border-color 0.2s;
   }
 
-  .waitlist-form input:focus { border-color: var(--lime); }
-  .waitlist-form input::placeholder { color: var(--muted); }
+  .waitlist-form input[type="email"]:focus { border-color: var(--lime); }
+  .waitlist-form input[type="email"]::placeholder { color: var(--muted); }
 
   .submit-btn {
     background: var(--lime);
@@ -192,6 +192,19 @@
   }
 
   .form-note strong { color: var(--lime); font-weight: 600; }
+
+  /* Buttondown form - keep label for a11y but hide visually to match current design */
+  .embeddable-buttondown-form label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
   /* SUCCESS */
   .success-msg {
@@ -578,16 +591,20 @@
       <strong>Cutthroat CRM</strong> is the no-nonsense CRM for solo pressure washers, gutter cleaners, and exterior service operators — without the $109/month price tag.
     </p>
 
-    <div class="waitlist-form" id="waitlist">
+    <form
+      action="https://buttondown.com/api/emails/embed-subscribe/dillonlara115"
+      method="post"
+      class="waitlist-form embeddable-buttondown-form"
+      id="waitlist"
+      referrerpolicy="unsafe-url"
+    >
+      <label for="bd-email">Enter your email</label>
       <div class="input-row">
-        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email">
-        <button class="submit-btn" onclick="handleSubmit()">Get Early Access →</button>
+        <input type="email" name="email" id="bd-email" placeholder="your@email.com" autocomplete="email">
+        <input type="submit" class="submit-btn" value="Get Early Access →">
       </div>
       <p class="form-note">Early access pricing: <strong>$19/month</strong>. No credit card required to join the waitlist.</p>
-      <div class="success-msg" id="success-msg">
-        ✓ You're on the list! We'll reach out when early access opens.
-      </div>
-    </div>
+    </form>
   </div>
 
   <div class="hero-visual">
@@ -746,7 +763,7 @@
         <li>Mobile app</li>
         <li>Email & SMS invoice delivery</li>
       </ul>
-      <button class="price-cta" onclick="document.getElementById('email-input').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+      <button class="price-cta" onclick="document.getElementById('bd-email').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
     </div>
     <div class="pricing-card">
       <div class="price-name">Growth</div>
@@ -759,7 +776,7 @@
         <li>Review request automation</li>
         <li>Priority support</li>
       </ul>
-      <button class="price-cta" onclick="document.getElementById('email-input').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+      <button class="price-cta" onclick="document.getElementById('bd-email').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
     </div>
   </div>
 </section>
@@ -770,16 +787,19 @@
     <h2>Stop losing jobs to<br><em>a slow quote.</em></h2>
     <p>Join the waitlist and get early access at $19/month — locked in for life.</p>
   </div>
-  <div class="waitlist-form">
+  <form
+    action="https://buttondown.com/api/emails/embed-subscribe/dillonlara115"
+    method="post"
+    class="waitlist-form embeddable-buttondown-form"
+    referrerpolicy="unsafe-url"
+  >
+    <label for="bd-email-2">Enter your email</label>
     <div class="input-row">
-      <input type="email" id="email-input-2" placeholder="your@email.com">
-      <button class="submit-btn" onclick="handleSubmit2()">Join Waitlist →</button>
+      <input type="email" name="email" id="bd-email-2" placeholder="your@email.com" autocomplete="email">
+      <input type="submit" class="submit-btn" value="Join Waitlist →">
     </div>
     <p class="form-note">No credit card. No spam. <strong>Early access pricing</strong> reserved for waitlist members.</p>
-    <div class="success-msg" id="success-msg-2">
-      ✓ You're on the list! We'll reach out when early access opens.
-    </div>
-  </div>
+  </form>
 </section>
 
 <footer>
@@ -788,870 +808,7 @@
 </footer>
 
 <script>
-  function handleSubmit() {
-    const email = document.getElementById('email-input').value;
-    if (!email || !email.includes('@')) {
-      document.getElementById('email-input').style.borderColor = '#e84f2d';
-      return;
-    }
-    document.getElementById('email-input').style.borderColor = '';
-    document.querySelector('.waitlist-form .input-row').style.display = 'none';
-    document.querySelector('.waitlist-form .form-note').style.display = 'none';
-    document.getElementById('success-msg').style.display = 'block';
-    // In production: POST to your email collection endpoint
-    console.log('Waitlist signup:', email);
-  }
-
-  function handleSubmit2() {
-    const email = document.getElementById('email-input-2').value;
-    if (!email || !email.includes('@')) {
-      document.getElementById('email-input-2').style.borderColor = '#e84f2d';
-      return;
-    }
-    document.getElementById('email-input-2').style.borderColor = '';
-    const form = document.querySelector('.cta-section .waitlist-form');
-    form.querySelector('.input-row').style.display = 'none';
-    form.querySelector('.form-note').style.display = 'none';
-    document.getElementById('success-msg-2').style.display = 'block';
-    console.log('Waitlist signup:', email);
-  }
-
-  document.getElementById('email-input').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSubmit();
-  });
-
-  document.getElementById('email-input-2').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSubmit2();
-  });
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cutthroat CRM — CRM for Solo Exterior Cleaners</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0f1108;
-    --surface: #181a0f;
-    --surface2: #1e2113;
-    --lime: #c8f135;
-    --lime-dim: #9bbf22;
-    --white: #f4f2e8;
-    --muted: #7a7d68;
-    --border: #2a2d1e;
-    --red: #e84f2d;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3, .brand {
-    font-family: 'Oswald', sans-serif;
-  }
-
-  /* NAV */
-  nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 2rem;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: rgba(15,17,8,0.92);
-    backdrop-filter: blur(12px);
-    z-index: 100;
-  }
-
-  .brand {
-    font-size: 1.3rem;
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    color: var(--white);
-  }
-
-  .brand span { color: var(--lime); font-weight: 400; }
-
-  .nav-cta {
-    background: var(--lime);
-    color: var(--bg);
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    padding: 0.5rem 1.25rem;
-    border: none;
-    cursor: pointer;
-    letter-spacing: 0.03em;
-    transition: background 0.2s;
-    text-decoration: none;
-  }
-
-  .nav-cta:hover { background: var(--lime-dim); }
-
-  /* HERO */
-  .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 6rem 2rem 5rem;
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--lime);
-    background: rgba(200,241,53,0.08);
-    border: 1px solid rgba(200,241,53,0.2);
-    padding: 0.3rem 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: var(--lime);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  h1 {
-    font-size: clamp(2.4rem, 4vw, 3.4rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: 0.01em;
-    margin-bottom: 1.25rem;
-  }
-
-  h1 em {
-    font-style: normal;
-    color: var(--lime);
-  }
-
-  .hero-sub {
-    font-size: 1.1rem;
-    color: var(--muted);
-    max-width: 440px;
-    margin-bottom: 2rem;
-    font-weight: 300;
-    line-height: 1.7;
-  }
-
-  .hero-sub strong {
-    color: var(--white);
-    font-weight: 500;
-  }
-
-  /* FORM */
-  .waitlist-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .waitlist-form input {
-    flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    padding: 0.85rem 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .waitlist-form input:focus { border-color: var(--lime); }
-  .waitlist-form input::placeholder { color: var(--muted); }
-
-  .submit-btn {
-    background: var(--lime);
-    color: var(--bg);
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    padding: 0.85rem 1.75rem;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s, transform 0.15s;
-    letter-spacing: 0.02em;
-  }
-
-  .submit-btn:hover { background: var(--lime-dim); transform: translateY(-1px); }
-  .submit-btn:active { transform: translateY(0); }
-
-  .form-note {
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-
-  .form-note strong { color: var(--lime); font-weight: 600; }
-
-  /* SUCCESS */
-  .success-msg {
-    display: none;
-    background: rgba(200,241,53,0.08);
-    border: 1px solid rgba(200,241,53,0.3);
-    padding: 1rem 1.25rem;
-    font-size: 0.95rem;
-    color: var(--lime);
-  }
-
-  /* HERO VISUAL */
-  .hero-visual {
-    position: relative;
-  }
-
-  .mockup-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1.5rem;
-    position: relative;
-  }
-
-  .mockup-card::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--lime);
-  }
-
-  .mockup-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .mockup-title {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-
-  .status-badge {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
-    border-radius: 2px;
-  }
-
-  .status-new { background: rgba(200,241,53,0.15); color: var(--lime); }
-  .status-sent { background: rgba(59,130,246,0.15); color: #60a5fa; }
-  .status-paid { background: rgba(34,197,94,0.15); color: #4ade80; }
-
-  .job-list { display: flex; flex-direction: column; gap: 0.6rem; }
-
-  .job-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    transition: border-color 0.2s;
-    animation: slideIn 0.4s ease forwards;
-    opacity: 0;
-  }
-
-  .job-item:nth-child(1) { animation-delay: 0.1s; }
-  .job-item:nth-child(2) { animation-delay: 0.25s; }
-  .job-item:nth-child(3) { animation-delay: 0.4s; }
-  .job-item:nth-child(4) { animation-delay: 0.55s; }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(12px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  .job-item:hover { border-color: var(--lime); }
-
-  .job-client { font-size: 0.85rem; font-weight: 500; }
-  .job-type { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
-
-  .job-right { text-align: right; }
-  .job-amount { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--lime); }
-  .job-date { font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem; }
-
-  .mockup-footer {
-    margin-top: 1.25rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .stat-item { text-align: center; }
-  .stat-value { font-family: 'Oswald', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--lime); }
-  .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-
-  /* PAIN POINTS */
-  .pain-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .section-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .section-heading {
-    font-family: 'Oswald', sans-serif;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    margin-bottom: 3rem;
-    max-width: 600px;
-  }
-
-  .pain-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-  }
-
-  .pain-card {
-    background: var(--bg);
-    padding: 2rem 1.75rem;
-    transition: background 0.2s;
-  }
-
-  .pain-card:hover { background: var(--surface); }
-
-  .pain-icon {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .pain-card h3 {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: var(--white);
-  }
-
-  .pain-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-
-  /* FEATURES */
-  .features-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-
-  .feature-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border);
-    transition: border-color 0.2s;
-  }
-
-  .feature-item:hover { border-color: var(--lime); }
-
-  .feature-dot {
-    width: 8px;
-    height: 8px;
-    background: var(--lime);
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 0.45rem;
-  }
-
-  .feature-item h3 {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-bottom: 0.35rem;
-  }
-
-  .feature-item p { font-size: 0.85rem; color: var(--muted); }
-
-  /* PRICING */
-  .pricing-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .pricing-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-top: 3rem;
-    max-width: 700px;
-  }
-
-  .pricing-card {
-    border: 1px solid var(--border);
-    padding: 2rem;
-    position: relative;
-    transition: border-color 0.2s;
-  }
-
-  .pricing-card:hover { border-color: var(--lime); }
-
-  .pricing-card.featured {
-    border-color: var(--lime);
-  }
-
-  .pricing-card.featured::after {
-    content: 'EARLY ACCESS';
-    position: absolute;
-    top: -1px;
-    right: 1.5rem;
-    background: var(--lime);
-    color: var(--bg);
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    padding: 0.2rem 0.6rem;
-  }
-
-  .price-amount {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--lime);
-    margin: 0.75rem 0 0.25rem;
-  }
-
-  .price-amount span { font-size: 1rem; font-weight: 400; color: var(--muted); }
-
-  .price-name {
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .price-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
-
-  .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
-
-  .price-features li {
-    font-size: 0.85rem;
-    color: var(--muted);
-    display: flex;
-    gap: 0.5rem;
-    align-items: flex-start;
-  }
-
-  .price-features li::before {
-    content: '✓';
-    color: var(--lime);
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-
-  .price-cta {
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--lime);
-    color: var(--lime);
-    font-family: 'Oswald', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    padding: 0.75rem;
-    cursor: pointer;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-  }
-
-  .pricing-card.featured .price-cta {
-    background: var(--lime);
-    color: var(--bg);
-  }
-
-  .price-cta:hover { background: var(--lime); color: var(--bg); }
-
-  /* CTA SECTION */
-  .cta-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 5rem 2rem 6rem;
-    border-top: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  .cta-section h2 {
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
-    font-weight: 800;
-    letter-spacing: 0.01em;
-    line-height: 1.1;
-  }
-
-  .cta-section h2 em { font-style: normal; color: var(--lime); }
-
-  .cta-section p { color: var(--muted); margin-top: 1rem; font-size: 0.95rem; }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 1.5rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  footer p { font-size: 0.8rem; color: var(--muted); }
-
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.35;
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .hero { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 1.25rem; }
-    .hero-visual { display: none; }
-    .pain-grid { grid-template-columns: 1fr; }
-    .features-grid { grid-template-columns: 1fr; }
-    .pricing-cards { grid-template-columns: 1fr; }
-    .cta-section { grid-template-columns: 1fr; gap: 2rem; }
-    .input-row { flex-direction: column; }
-    nav { padding: 1rem 1.25rem; }
-  }
-</style>
-</head>
-<body>
-
-<nav>
-  <div class="brand">Cutthroat<span>CRM</span></div>
-  <a href="#waitlist" class="nav-cta">Get Early Access</a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-eyebrow">Built for solo operators</div>
-    <h1>Quote it.<br>Send it.<br><em>Get paid.</em></h1>
-    <p class="hero-sub">
-      Jobber is built for crews. You're one person.<br>
-      <strong>Cutthroat CRM</strong> is the no-nonsense CRM for solo pressure washers, gutter cleaners, and exterior service operators — without the $109/month price tag.
-    </p>
-
-    <div class="waitlist-form" id="waitlist">
-      <div class="input-row">
-        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email">
-        <button class="submit-btn" onclick="handleSubmit()">Get Early Access →</button>
-      </div>
-      <p class="form-note">Early access pricing: <strong>$19/month</strong>. No credit card required to join the waitlist.</p>
-      <div class="success-msg" id="success-msg">
-        ✓ You're on the list! We'll reach out when early access opens.
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-visual">
-    <div class="mockup-card">
-      <div class="mockup-header">
-        <span class="mockup-title">This Week's Jobs</span>
-        <span class="status-badge status-new">4 Active</span>
-      </div>
-      <div class="job-list">
-        <div class="job-item">
-          <div>
-            <div class="job-client">Martinez Residence</div>
-            <div class="job-type">Pressure Wash — Driveway + House</div>
-          </div>
-          <div class="job-right">
-            <div class="job-amount">$320</div>
-            <div class="job-date"><span class="status-badge status-paid">Paid</span></div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div>
-            <div class="job-client">Thompson Property</div>
-            <div class="job-type">Gutter Cleaning — 2,200 sqft</div>
-          </div>
-          <div class="job-right">
-            <div class="job-amount">$175</div>
-            <div class="job-date"><span class="status-badge status-sent">Quote Sent</span></div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div>
-            <div class="job-client">Ridgeview HOA</div>
-            <div class="job-type">Pressure Wash — Sidewalks</div>
-          </div>
-          <div class="job-right">
-            <div class="job-amount">$450</div>
-            <div class="job-date"><span class="status-badge status-paid">Paid</span></div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div>
-            <div class="job-client">Chen Residence</div>
-            <div class="job-type">Gutter Cleaning + Flush</div>
-          </div>
-          <div class="job-right">
-            <div class="job-amount">$200</div>
-            <div class="job-date"><span class="status-badge status-new">New Lead</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="mockup-footer">
-        <div class="stat-item">
-          <div class="stat-value">$1,145</div>
-          <div class="stat-label">This Week</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">4</div>
-          <div class="stat-label">Jobs</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">2</div>
-          <div class="stat-label">Pending</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PAIN POINTS -->
-<section class="pain-section">
-  <div class="section-label">The problem</div>
-  <h2 class="section-heading">You're losing jobs to a text thread.</h2>
-  <div class="pain-grid">
-    <div class="pain-card">
-      <div class="pain-icon">⏱</div>
-      <h3>Slow quotes cost you jobs</h3>
-      <p>Customers text 3 operators. The first one to reply with a real quote usually wins. If you're manually typing estimates, you're already losing.</p>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">📱</div>
-      <h3>Leads disappear in your DMs</h3>
-      <p>You said you'd follow up "later." Later never came. Without a system, leads fall into the void and you lose work you already had.</p>
-    </div>
-    <div class="pain-card">
-      <div class="pain-icon">💸</div>
-      <h3>Jobber is built for crews</h3>
-      <p>You don't need GPS dispatch for 5 trucks. You need to send a quote, schedule a job, and collect payment. That shouldn't cost $109/month.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features-section">
-  <div class="section-label">What's inside</div>
-  <h2 class="section-heading">Everything you need.<br>Nothing you don't.</h2>
-  <div class="features-grid">
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <div>
-        <h3>AI-Assisted Quoting</h3>
-        <p>Enter the job type and square footage. Get a ready-to-send quote in under 60 seconds. No spreadsheets, no guessing.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <div>
-        <h3>One-Tap Invoicing</h3>
-        <p>Convert a quote to an invoice instantly. Send it via text or email and accept payment online — no invoice software needed.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <div>
-        <h3>Lead & Follow-Up Tracking</h3>
-        <p>Every lead gets a status. Know exactly who needs a quote, who's waiting, and who needs a follow-up nudge.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <div>
-        <h3>Client History</h3>
-        <p>See every job you've done for a client, what you charged, and when. Upsell recurring cleanings with confidence.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <div>
-        <h3>Job Profitability Tracker</h3>
-        <p>Log your time and materials per job. Know which job types are actually worth doing and which ones eat your afternoon.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-dot"></div>
-      <div>
-        <h3>Mobile First</h3>
-        <p>Built to use from your phone in a driveway between jobs. No learning curve, no desktop-only nonsense.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section class="pricing-section">
-  <div class="section-label">Pricing</div>
-  <h2 class="section-heading">Priced for one person,<br>not a fleet.</h2>
-  <div class="pricing-cards">
-    <div class="pricing-card featured">
-      <div class="price-name">Solo</div>
-      <div class="price-amount">$19<span>/mo</span></div>
-      <p class="price-desc">Early access rate — locked in for life.</p>
-      <ul class="price-features">
-        <li>Unlimited quotes & invoices</li>
-        <li>Lead tracking & follow-ups</li>
-        <li>Client history</li>
-        <li>Job profitability tracker</li>
-        <li>Mobile app</li>
-        <li>Email & SMS invoice delivery</li>
-      </ul>
-      <button class="price-cta" onclick="document.getElementById('email-input').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
-    </div>
-    <div class="pricing-card">
-      <div class="price-name">Growth</div>
-      <div class="price-amount">$39<span>/mo</span></div>
-      <p class="price-desc">When you're ready to scale up.</p>
-      <ul class="price-features">
-        <li>Everything in Solo</li>
-        <li>Up to 3 crew members</li>
-        <li>Recurring job scheduling</li>
-        <li>Review request automation</li>
-        <li>Priority support</li>
-      </ul>
-      <button class="price-cta" onclick="document.getElementById('email-input').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
-    </div>
-  </div>
-</section>
-
-<!-- BOTTOM CTA -->
-<section class="cta-section">
-  <div>
-    <h2>Stop losing jobs to<br><em>a slow quote.</em></h2>
-    <p>Join the waitlist and get early access at $19/month — locked in for life.</p>
-  </div>
-  <div class="waitlist-form">
-    <div class="input-row">
-      <input type="email" id="email-input-2" placeholder="your@email.com">
-      <button class="submit-btn" onclick="handleSubmit2()">Join Waitlist →</button>
-    </div>
-    <p class="form-note">No credit card. No spam. <strong>Early access pricing</strong> reserved for waitlist members.</p>
-    <div class="success-msg" id="success-msg-2">
-      ✓ You're on the list! We'll reach out when early access opens.
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>© 2026 Cutthroat CRM. Built for the solo operator.</p>
-  <p style="font-size:0.75rem;">cutthroatcrm.com</p>
-</footer>
-
-<script>
-  function handleSubmit() {
-    const email = document.getElementById('email-input').value;
-    if (!email || !email.includes('@')) {
-      document.getElementById('email-input').style.borderColor = '#e84f2d';
-      return;
-    }
-    document.getElementById('email-input').style.borderColor = '';
-    document.querySelector('.waitlist-form .input-row').style.display = 'none';
-    document.querySelector('.waitlist-form .form-note').style.display = 'none';
-    document.getElementById('success-msg').style.display = 'block';
-    // In production: POST to your email collection endpoint
-    console.log('Waitlist signup:', email);
-  }
-
-  function handleSubmit2() {
-    const email = document.getElementById('email-input-2').value;
-    if (!email || !email.includes('@')) {
-      document.getElementById('email-input-2').style.borderColor = '#e84f2d';
-      return;
-    }
-    document.getElementById('email-input-2').style.borderColor = '';
-    const form = document.querySelector('.cta-section .waitlist-form');
-    form.querySelector('.input-row').style.display = 'none';
-    form.querySelector('.form-note').style.display = 'none';
-    document.getElementById('success-msg-2').style.display = 'block';
-    console.log('Waitlist signup:', email);
-  }
-
-  document.getElementById('email-input').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSubmit();
-  });
-
-  document.getElementById('email-input-2').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSubmit2();
-  });
+  // Forms now submit directly to Buttondown - no JS handlers needed
 </script>
 
 </body>
