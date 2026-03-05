@@ -6,6 +6,7 @@
 <title>Cutthroat CRM — CRM for Solo Exterior Cleaners</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
 <style>
   :root {
     --bg: #0f1108;
@@ -27,7 +28,7 @@
     background: var(--bg);
     color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 1.6;
     overflow-x: hidden;
   }
@@ -64,7 +65,7 @@
     color: var(--bg);
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 1rem;
     padding: 0.5rem 1.25rem;
     border: none;
     cursor: pointer;
@@ -90,7 +91,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.78rem;
+    font-size: 1rem;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -142,6 +143,12 @@
     font-weight: 500;
   }
 
+  /* Scroll targets - account for sticky nav so form isn't hidden */
+  #waitlist,
+  #waitlist-cta {
+    scroll-margin-top: 5rem;
+  }
+
   /* FORM */
   .waitlist-form {
     display: flex;
@@ -151,30 +158,36 @@
 
   .input-row {
     display: flex;
+    align-items: flex-start;
     gap: 0.5rem;
   }
 
-  .waitlist-form input[type="email"] {
+  .waitlist-form input[type="email"],
+  .waitlist-form input[type="text"] {
     flex: 1;
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     padding: 0.85rem 1rem;
     outline: none;
     transition: border-color 0.2s;
   }
 
-  .waitlist-form input[type="email"]:focus { border-color: var(--lime); }
-  .waitlist-form input[type="email"]::placeholder { color: var(--muted); }
+  .waitlist-form input[type="email"]:focus,
+  .waitlist-form input[type="text"]:focus { border-color: var(--lime) !important; }
+  .waitlist-form input.error,
+  .waitlist-form input.invalid { border-color: var(--red) !important; }
+  .waitlist-form input[type="email"]::placeholder,
+  .waitlist-form input[type="text"]::placeholder { color: var(--muted); }
 
   .submit-btn {
     background: var(--lime);
     color: var(--bg);
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
     padding: 0.85rem 1.75rem;
     border: none;
     cursor: pointer;
@@ -187,14 +200,17 @@
   .submit-btn:active { transform: translateY(0); }
 
   .form-note {
-    font-size: 0.78rem;
+    font-size: 1rem;
     color: var(--muted);
   }
 
   .form-note strong { color: var(--lime); font-weight: 600; }
 
-  /* Buttondown form - keep label for a11y but hide visually to match current design */
-  .embeddable-buttondown-form label {
+  /* Mailchimp form - override defaults, hide labels visually, keep for a11y */
+  #mc_embed_signup,
+  #mc_embed_signup_cta { background: transparent !important; width: 100% !important; }
+  .waitlist-form .mc-field-group { margin-bottom: 0; }
+  .waitlist-form .mc-field-group label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -205,6 +221,89 @@
     white-space: nowrap;
     border: 0;
   }
+  /* Override Mailchimp input styles - force our dark theme */
+  .waitlist-form input[type="email"],
+  .waitlist-form input[type="text"],
+  #mc_embed_signup input[type="email"],
+  #mc_embed_signup input[type="text"],
+  #mc_embed_signup_cta input[type="email"],
+  #mc_embed_signup_cta input[type="text"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--white) !important;
+  }
+  #mc_embed_signup input[type="email"]:focus,
+  #mc_embed_signup input[type="text"]:focus,
+  #mc_embed_signup_cta input[type="email"]:focus,
+  #mc_embed_signup_cta input[type="text"]:focus {
+    border-color: var(--lime) !important;
+  }
+  #mc_embed_signup input.error,
+  #mc_embed_signup input.invalid,
+  #mc_embed_signup_cta input.error,
+  #mc_embed_signup_cta input.invalid {
+    border-color: var(--red) !important;
+  }
+  /* Override Mailchimp button - force our lime style */
+  .waitlist-form .submit-btn,
+  .waitlist-form .button,
+  #mc_embed_signup .submit-btn,
+  #mc_embed_signup .button,
+  #mc_embed_signup_cta .submit-btn,
+  #mc_embed_signup_cta .button {
+    background: var(--lime) !important;
+    color: var(--bg) !important;
+    border: none !important;
+  }
+  /* Form fields wrapper - reserve space for error/success so layout doesn't shift */
+  .waitlist-form .form-fields-wrap {
+    position: relative;
+    min-height: 6rem;
+  }
+  .waitlist-form #mce-responses {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    z-index: 1;
+  }
+  /* Error message - solid, high-contrast, stands out */
+  .waitlist-form #mce-error-response,
+  .waitlist-form #mce-error-response-2 {
+    background: rgba(232, 79, 45, 0.2) !important;
+    border: 2px solid var(--red) !important;
+    color: var(--red) !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+  }
+  .waitlist-form #mce-success-response,
+  .waitlist-form #mce-success-response-2 {
+    background: var(--surface) !important;
+    border: 1px solid var(--lime) !important;
+    color: var(--white) !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+  .waitlist-form #mce-success-response::before,
+  .waitlist-form #mce-success-response-2::before {
+    content: '✓ ';
+    color: var(--lime);
+    font-weight: 700;
+    margin-right: 0.35em;
+  }
+  .waitlist-form .optionalParent { margin: 0; }
+  .waitlist-form .optionalParent .clear.foot { margin: 0; }
+  .waitlist-form .optionalParent p { display: none !important; }
+  .waitlist-form .input-row .mc-field-group { flex: 1; min-width: 0; display: flex; }
+  .waitlist-form .input-row .mc-field-group.mc-field-group--name { flex: 0 0 7rem; }
+  .waitlist-form .input-row .mc-field-group input { width: 100%; }
 
   /* SUCCESS */
   .success-msg {
@@ -212,7 +311,7 @@
     background: rgba(200,241,53,0.08);
     border: 1px solid rgba(200,241,53,0.3);
     padding: 1rem 1.25rem;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--lime);
   }
 
@@ -250,11 +349,11 @@
   .mockup-title {
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .status-badge {
-    font-size: 0.7rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -292,12 +391,12 @@
 
   .job-item:hover { border-color: var(--lime); }
 
-  .job-client { font-size: 0.85rem; font-weight: 500; }
-  .job-type { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+  .job-client { font-size: 1rem; font-weight: 500; }
+  .job-type { font-size: 1rem; color: var(--muted); margin-top: 0.1rem; }
 
   .job-right { text-align: right; }
-  .job-amount { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--lime); }
-  .job-date { font-size: 0.7rem; color: var(--muted); margin-top: 0.1rem; }
+  .job-amount { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1rem; color: var(--lime); }
+  .job-date { font-size: 1rem; color: var(--muted); margin-top: 0.1rem; }
 
   .mockup-footer {
     margin-top: 1.25rem;
@@ -310,7 +409,7 @@
 
   .stat-item { text-align: center; }
   .stat-value { font-family: 'Oswald', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--lime); }
-  .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .stat-label { font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
 
   /* PAIN POINTS */
   .pain-section {
@@ -321,7 +420,7 @@
   }
 
   .section-label {
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -366,7 +465,7 @@
     color: var(--white);
   }
 
-  .pain-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+  .pain-card p { font-size: 1rem; color: var(--muted); line-height: 1.65; }
 
   /* FEATURES */
   .features-section {
@@ -405,11 +504,11 @@
   .feature-item h3 {
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin-bottom: 0.35rem;
   }
 
-  .feature-item p { font-size: 0.85rem; color: var(--muted); }
+  .feature-item p { font-size: 1rem; color: var(--muted); }
 
   /* PRICING */
   .pricing-section {
@@ -449,7 +548,7 @@
     color: var(--bg);
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.65rem;
+    font-size: 1rem;
     letter-spacing: 0.08em;
     padding: 0.2rem 0.6rem;
   }
@@ -468,18 +567,18 @@
   .price-name {
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 1rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
-  .price-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .price-desc { font-size: 1rem; color: var(--muted); margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
 
   .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
 
   .price-features li {
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--muted);
     display: flex;
     gap: 0.5rem;
@@ -500,7 +599,7 @@
     color: var(--lime);
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 1rem;
     padding: 0.75rem;
     cursor: pointer;
     letter-spacing: 0.05em;
@@ -535,7 +634,7 @@
 
   .cta-section h2 em { font-style: normal; color: var(--lime); }
 
-  .cta-section p { color: var(--muted); margin-top: 1rem; font-size: 0.95rem; }
+  .cta-section p { color: var(--muted); margin-top: 1rem; font-size: 1rem; }
 
   /* FOOTER */
   footer {
@@ -548,7 +647,7 @@
     margin: 0 auto;
   }
 
-  footer p { font-size: 0.8rem; color: var(--muted); }
+  footer p { font-size: 1rem; color: var(--muted); }
 
   /* NOISE OVERLAY */
   body::before {
@@ -591,20 +690,39 @@
       <strong>Cutthroat CRM</strong> is the no-nonsense CRM for solo pressure washers, gutter cleaners, and exterior service operators — without the $109/month price tag.
     </p>
 
-    <form
-      action="https://buttondown.com/api/emails/embed-subscribe/dillonlara115"
-      method="post"
-      class="waitlist-form embeddable-buttondown-form"
-      id="waitlist"
-      referrerpolicy="unsafe-url"
-    >
-      <label for="bd-email">Enter your email</label>
-      <div class="input-row">
-        <input type="email" name="email" id="bd-email" placeholder="your@email.com" autocomplete="email">
-        <input type="submit" class="submit-btn" value="Get Early Access →">
+    <div id="waitlist" class="waitlist-form">
+      <div id="mc_embed_signup">
+      <form action="https://cutthroatcrm.us10.list-manage.com/subscribe/post?u=1d5d4ef954d4418db423fa8dc&amp;id=3f3b234bc8&amp;f_id=009354e4f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+        <div id="mc_embed_signup_scroll">
+          <div class="form-fields-wrap">
+            <div class="input-row">
+              <div class="mc-field-group mc-field-group--name">
+                <label for="mce-FNAME">First Name</label>
+                <input type="text" name="FNAME" id="mce-FNAME" placeholder="First name" value="">
+              </div>
+              <div class="mc-field-group">
+                <label for="mce-EMAIL">Email Address <span class="asterisk">*</span></label>
+                <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="your@email.com" required value="">
+              </div>
+              <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="submit-btn button" value="Get Early Access →">
+            </div>
+            <div id="mce-responses" class="clear foot">
+              <div class="response" id="mce-error-response" style="display: none;"></div>
+              <div class="response" id="mce-success-response" style="display: none;"></div>
+            </div>
+          </div>
+          <div style="position: absolute; left: -5000px;" aria-hidden="true">
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups -->
+            <input type="text" name="b_1d5d4ef954d4418db423fa8dc_3f3b234bc8" tabindex="-1" value="">
+          </div>
+          <div class="optionalParent">
+            <div class="clear foot"></div>
+          </div>
+          <p class="form-note">Early access pricing: <strong>$19/month</strong>. No credit card required to join the waitlist.</p>
+        </div>
+      </form>
       </div>
-      <p class="form-note">Early access pricing: <strong>$19/month</strong>. No credit card required to join the waitlist.</p>
-    </form>
+    </div>
   </div>
 
   <div class="hero-visual">
@@ -763,7 +881,7 @@
         <li>Mobile app</li>
         <li>Email & SMS invoice delivery</li>
       </ul>
-      <button class="price-cta" onclick="document.getElementById('bd-email').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+      <button class="price-cta" onclick="document.getElementById('mce-EMAIL-2').focus(); document.getElementById('waitlist-cta').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
     </div>
     <div class="pricing-card">
       <div class="price-name">Growth</div>
@@ -776,7 +894,7 @@
         <li>Review request automation</li>
         <li>Priority support</li>
       </ul>
-      <button class="price-cta" onclick="document.getElementById('bd-email').focus(); document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+      <button class="price-cta" onclick="document.getElementById('mce-EMAIL-2').focus(); document.getElementById('waitlist-cta').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
     </div>
   </div>
 </section>
@@ -787,28 +905,58 @@
     <h2>Stop losing jobs to<br><em>a slow quote.</em></h2>
     <p>Join the waitlist and get early access at $19/month — locked in for life.</p>
   </div>
-  <form
-    action="https://buttondown.com/api/emails/embed-subscribe/dillonlara115"
-    method="post"
-    class="waitlist-form embeddable-buttondown-form"
-    referrerpolicy="unsafe-url"
-  >
-    <label for="bd-email-2">Enter your email</label>
-    <div class="input-row">
-      <input type="email" name="email" id="bd-email-2" placeholder="your@email.com" autocomplete="email">
-      <input type="submit" class="submit-btn" value="Join Waitlist →">
+  <div id="waitlist-cta" class="waitlist-form">
+    <div id="mc_embed_signup_cta">
+      <form action="https://cutthroatcrm.us10.list-manage.com/subscribe/post?u=1d5d4ef954d4418db423fa8dc&amp;id=3f3b234bc8&amp;f_id=009354e4f0" method="post" id="mc-embedded-subscribe-form-2" name="mc-embedded-subscribe-form-2" class="validate" target="_blank">
+        <div id="mc_embed_signup_scroll">
+          <div class="form-fields-wrap">
+            <div class="input-row">
+              <div class="mc-field-group mc-field-group--name">
+                <label for="mce-FNAME-2">First Name</label>
+                <input type="text" name="FNAME" id="mce-FNAME-2" placeholder="First name" value="">
+              </div>
+              <div class="mc-field-group">
+                <label for="mce-EMAIL-2">Email Address <span class="asterisk">*</span></label>
+                <input type="email" name="EMAIL" class="required email" id="mce-EMAIL-2" placeholder="your@email.com" required value="">
+              </div>
+              <input type="submit" name="subscribe" id="mc-embedded-subscribe-2" class="submit-btn button" value="Join Waitlist →">
+            </div>
+            <div id="mce-responses" class="clear foot">
+              <div class="response" id="mce-error-response-2" style="display: none;"></div>
+              <div class="response" id="mce-success-response-2" style="display: none;"></div>
+            </div>
+          </div>
+          <div style="position: absolute; left: -5000px;" aria-hidden="true">
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups -->
+            <input type="text" name="b_1d5d4ef954d4418db423fa8dc_3f3b234bc8" tabindex="-1" value="">
+          </div>
+          <div class="optionalParent">
+            <div class="clear foot"></div>
+          </div>
+          <p class="form-note">No credit card. No spam. <strong>Early access pricing</strong> reserved for waitlist members.</p>
+        </div>
+      </form>
     </div>
-    <p class="form-note">No credit card. No spam. <strong>Early access pricing</strong> reserved for waitlist members.</p>
-  </form>
+  </div>
 </section>
 
 <footer>
   <p>© 2026 Cutthroat CRM. Built for the solo operator.</p>
-  <p style="font-size:0.75rem;">cutthroatcrm.com</p>
+  <p style="font-size:1rem;">cutthroatcrm.com</p>
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
 <script>
-  // Forms now submit directly to Buttondown - no JS handlers needed
+  (function($) {
+    window.fnames = new Array();
+    window.ftypes = new Array();
+    fnames[1] = 'FNAME';
+    ftypes[1] = 'text';
+    fnames[0] = 'EMAIL';
+    ftypes[0] = 'email';
+  }(jQuery));
+  var $mcj = jQuery.noConflict(true);
 </script>
 
 </body>
